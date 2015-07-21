@@ -1,5 +1,9 @@
 class Bike
-  def working?
 
+  def working?
+    true
   end
 end
+
+# bike = Bike.new(true)
+# puts bike.working
