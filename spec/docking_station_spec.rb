@@ -8,8 +8,15 @@ describe DockingStation do
 		expect(subject.release_bike).to be_instance_of(Bike)
 	end
 
-	it "fails if no bikes available" do
-		expect{subject.release_bike}.to raise_error("No bikes available!")
+	it "releases a working bike" do 
+		subject.dock(Bike.new)
+		expect(subject.release_bike).to be_working
+	end
+
+	describe "#release_bike" do
+		it "fails if no bikes available" do
+			expect{subject.release_bike}.to raise_error("No bikes available!")
+		end
 	end
 
 	it {is_expected.to respond_to(:dock).with(1).argument}
