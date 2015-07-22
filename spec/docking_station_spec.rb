@@ -3,7 +3,8 @@ require 'docking_station'
 describe DockingStation do 
 	it {is_expected.to respond_to :release_bike}
 
-	it "releases a Bike" do
+	it "releases a Bike after a bike has been docked" do
+		subject.dock(Bike.new)
 		expect(subject.release_bike).to be_instance_of(Bike)
 	end
 
