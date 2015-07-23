@@ -13,11 +13,7 @@ class Bike
 	end
 
 	def broken? 
-		if @working == true
-			return false
-		else
-			return true
-		end
+		!@working == true
 	end
 
 end
