@@ -17,7 +17,7 @@ describe DockingStation do
 			expect { subject.dock Bike.new }.to raise_error 'Docking station full'
 		end
 	end
-	
+
 	it {is_expected.to respond_to :release_bike}
 
 	it "releases a Bike after a bike has been docked" do
@@ -36,7 +36,7 @@ describe DockingStation do
 		end
 	end
 
-	context 'only one broken bike is docked' do 
+	context 'when only one broken bike is docked' do 
 		bike = Bike.new
 		bike.report_broken
 		station = DockingStation.new
@@ -63,7 +63,7 @@ describe DockingStation do
 	# 	end
 	# end
 
-	context 'a mixture of working bikes and broken bikes are docked' do 
+	context 'when a mixture of working bikes and broken bikes are docked' do 
 		station = DockingStation.new
 		working_bike1 = Bike.new
 		working_bike2 = Bike.new
@@ -76,10 +76,12 @@ describe DockingStation do
 		station.dock working_bike2 
 		station.dock broken_bike2
 
-		it 'releases all working bikes first but then will not release anymore bikes' do 
-			expect(station.release_bike).to be_working
-			expect(station.release_bike).to be_working
-			expect{station.release_bike}.to raise_error("No working bikes available!")
+		describe "#release_bike" do
+			it 'releases all working bikes first but then will not release anymore bikes' do 
+				expect(station.release_bike).to be_working
+				expect(station.release_bike).to be_working
+				expect{station.release_bike}.to raise_error("No working bikes available!")
+			end
 		end
 	end
 
