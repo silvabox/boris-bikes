@@ -21,6 +21,54 @@ describe DockingStation do
 		expect(subject.release_bike).to be_working
 	end
 
+	context 'only one broken bike is docked' do 
+		bike = Bike.new
+		bike.report_broken
+		broken_bike = bike
+		station = DockingStation.new
+		station.dock(broken_bike)
+
+		describe "#release_bike" do
+			it 'fails if no working bikes are available' do 
+			expect{ station.release_bike }.to raise_error("No working bikes available!")
+			end
+		end
+	end
+
+	context 'one broken bike and one working bike are docked' do
+		station = DockingStation.new
+		working_bike = Bike.new
+		station.dock working_bike
+		broken_bike = Bike.new
+		broken_bike.report_broken
+		station.dock broken_bike
+
+		it 'releases the working bike and then will not release the broken bike' do 
+			expect(station.release_bike).to eq(working_bike)
+			expect{station.release_bike}.to raise_error("No working bikes available!")
+		end
+	end
+
+	context 'a mixture of working bikes and broken bikes are docked' do 
+		station = DockingStation.new
+		working_bike1 = Bike.new
+		working_bike2 = Bike.new
+		broken_bike1 = Bike.new
+		broken_bike1.report_broken
+		broken_bike2 = Bike.new
+		broken_bike1.report_broken
+		station.dock working_bike1 
+		station.dock broken_bike1
+		station.dock working_bike2 
+		station.dock broken_bike2
+
+		it 'releases all working bikes first but then will not release anymore bikes' do 
+			expect(station.release_bike).to eq(working_bike1)
+			expect(station.release_bike).to eq(working_bike2)
+			expect{station.release_bike}.to raise_error("No working bikes available!")
+		end
+	end
+
 	describe "#release_bike" do
 		it "fails if no bikes available" do
 			expect{subject.release_bike}.to raise_error("No bikes available!")
