@@ -49,32 +49,18 @@ describe DockingStation do
 		end
 	end
 
-	# context 'one broken bike and one working bike are docked' do
-	# 	station = DockingStation.new
-	# 	working_bike = Bike.new
-	# 	station.dock working_bike
-	# 	broken_bike = Bike.new
-	# 	broken_bike.report_broken
-	# 	station.dock broken_bike
-
-	# 	it 'releases the working bike and then will not release the broken bike' do 
-	# 		expect(station.release_bike).to eq(working_bike)
-	# 		expect{station.release_bike}.to raise_error("No working bikes available!")
-	# 	end
-	# end
-
 	context 'when a mixture of working bikes and broken bikes are docked' do 
 		station = DockingStation.new
-		working_bike1 = Bike.new
-		working_bike2 = Bike.new
-		broken_bike1 = Bike.new
-		broken_bike1.report_broken
-		broken_bike2 = Bike.new
-		broken_bike2.report_broken
-		station.dock working_bike1 
-		station.dock broken_bike1
-		station.dock working_bike2 
-		station.dock broken_bike2
+
+		i = 1
+		until i == 3 do 
+			station.dock Bike.new
+
+			bike = Bike.new
+			bike.report_broken
+			station.dock bike
+			i += 1
+		end
 
 		describe "#release_bike" do
 			it 'releases all working bikes first but then will not release anymore bikes' do 
