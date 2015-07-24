@@ -13,7 +13,7 @@ class Bike
 	end
 
 	def broken? 
-		!@working == true
+		!working?
 	end
 
 end

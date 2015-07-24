@@ -14,7 +14,7 @@ class DockingStation
 		fail 'No bikes available!' if empty?
 	
 		if @bikes.any?{ |bike| bike.working? == true }
-			position = @bikes.index { |o| o.working? == true }
+			position = @bikes.index { |bike| bike.working? == true }
 			@bikes.slice!(position)
 		else
 			fail 'No working bikes available!'
