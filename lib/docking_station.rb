@@ -10,25 +10,25 @@ class DockingStation
 		@capacity = size
 	end
 
-	def release_bike
-		fail 'No bikes available!' if empty?
-	
-		if @bikes.any?{ |bike| bike.working? == true }
-			position = @bikes.index { |bike| bike.working? == true }
-			@bikes.slice!(position)
-		else
-			fail 'No working bikes available!'
-		end
-	end
-
 	def dock bike
 		fail 'Docking station full' if full?
 		@bikes << bike
 	end	
 
-	private
+	def release_bike
+		fail 'No bikes available!' if empty?
+	
+		if any_working_bikes?
+			first_working_bike = @bikes.index { |bike| bike.working? == true }
+			@bikes.slice!(first_working_bike)
+		else
+			fail 'No working bikes available!'
+		end
 
-		attr_reader :bikes
+	end
+	
+
+	private
 
 	def full?
 		@bikes.count >= capacity
@@ -36,5 +36,9 @@ class DockingStation
 
 	def empty?
 		@bikes.empty?
+	end
+
+	def any_working_bikes?
+		@bikes.any?{ |bike| bike.working? == true }
 	end
 end

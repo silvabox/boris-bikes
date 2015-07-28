@@ -1,6 +1,10 @@
 require 'docking_station'
 
 describe DockingStation do 
+
+	let(:working_bike){ double :working_bike, working?: true }
+	let(:broken_bike){ double :broken_bike, working?: false }
+
 	it 'has a default capacity (is set directly in the code)' do
 		expect(subject.capacity).to eq DockingStation::DEFAULT_CAPACITY
 	end
@@ -20,15 +24,14 @@ describe DockingStation do
 
 	it {is_expected.to respond_to :release_bike}
 
-	it "releases a Bike after a bike has been docked" do
-		subject.dock(Bike.new)
-		expect(subject.release_bike).to be_instance_of(Bike)
-	end
+	context "when a bike is docked" do
+		before do
+			subject.dock working_bike
+		end
 
-	it "releases a working bike" do
-		bike = double :bike, working?: true 
-		subject.dock bike
-		expect(subject.release_bike).to be bike
+		it "releases a working bike" do
+			expect(subject.release_bike).to be working_bike
+		end
 	end
 
 	describe "#release_bike" do
@@ -37,8 +40,7 @@ describe DockingStation do
 		end
 
 		it 'does not release broken bikes' do 
-			subject.dock double :bike, working?: false
-			#subject.dock double :bike, working?: false
+			subject.dock broken_bike
 			expect { subject.release_bike }.to raise_error("No working bikes available!")
 		end
 	end
@@ -71,12 +73,10 @@ describe DockingStation do
 			i += 1
 		end
 
-		describe "#release_bike" do
-			it 'releases all working bikes first but then will not release anymore bikes' do 
-				expect(station.release_bike).to be_working
-				expect(station.release_bike).to be_working
-				expect{station.release_bike}.to raise_error("No working bikes available!")
-			end
+		it 'releases all working bikes first but then will not release anymore bikes' do 
+			expect(station.release_bike).to be_working
+			expect(station.release_bike).to be_working
+			expect{station.release_bike}.to raise_error("No working bikes available!")
 		end
 	end
 
