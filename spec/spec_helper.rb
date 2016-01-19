@@ -94,3 +94,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start

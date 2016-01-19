@@ -1,0 +1,4 @@
+script: bundle exec rspec spec
+addons:
+  code_climate:
+    repo_token: bfab751f6979951da382b8229371944547a685390d778ea39652a172eeeeb56d
